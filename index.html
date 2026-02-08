@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sehat Sine - Sistem Lengkap</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="main-header">
+            <div class="logo-area">
+                <div class="logo-box"><i class="fa-solid fa-heart-pulse"></i></div>
+                <div><h1>Sehat Sine</h1><p>Posyandu Digital KKN</p></div>
+            </div>
+        </header>
+
+        <section id="page-home" class="page-section active">
+            
+            <div class="hero-banner">
+                <div class="hero-text">
+                    <h2>Sugeng Rawuh</h2>
+                    <p>Sehat itu murah, sakit itu mahal. Yuk cek kondisi tubuh warga sekarang.</p>
+                </div>
+                <img src="siluet.png" class="hero-silhouette" alt="Siluet Desa Sine">
+            </div>
+
+            <div class="menu-grid">
+                <div class="menu-item main-action" onclick="navTo('page-check')">
+                    <div class="icon-box bg-blue"><i class="fa-solid fa-stethoscope"></i></div>
+                    <span>Cek Kesehatan</span>
+                </div>
+                <div class="menu-item main-action" onclick="navTo('page-history')">
+                    <div class="icon-box bg-orange"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                    <span>Riwayat</span>
+                </div>
+            </div>
+
+            <div class="category-section">
+                <div class="section-title-row"><h3>👨‍🌾 Zona Produktif</h3><span class="link-view">Geser 👉</span></div>
+                <div class="horizontal-scroll-container">
+                    <div class="news-card" onclick="openArticle('prod_boyok')"><div class="news-badge red">Tulang</div><h4>Boyok'en & Saraf Kejepit</h4><p>Bahaya salah posisi angkat beban.</p></div>
+                    <div class="news-card" onclick="openArticle('prod_maag')"><div class="news-badge orange">Pencernaan</div><h4>Telat Makan & Kopi</h4><p>Pemicu Asam Lambung.</p></div>
+                    <div class="news-card" onclick="openArticle('prod_rokok')"><div class="news-badge purple">Jantung</div><h4>Rokok + Begadang</h4><p>Musuh utama jantung muda.</p></div>
+                </div>
+            </div>
+            
+            <div class="category-section">
+                <div class="section-title-row"><h3>👴 Zona Lansia</h3><span class="link-view">Geser 👉</span></div>
+                <div class="horizontal-scroll-container">
+                    <div class="news-card" onclick="openArticle('lansia_darah')"><div class="news-badge red">Tensi</div><h4>Hipertensi: Silent Killer</h4><p>Kenapa obat harus rutin?</p></div>
+                    <div class="news-card" onclick="openArticle('lansia_sendi')"><div class="news-badge orange">Sendi</div><h4>Linu & Asam Urat</h4><p>Pantangan jeroan & emping.</p></div>
+                    <div class="news-card" onclick="openArticle('lansia_pusing')"><div class="news-badge blue">Saraf</div><h4>Pusing Bangun Tidur</h4><p>Hati-hati jatuh di kamar mandi.</p></div>
+                </div>
+            </div>
+
+            <div class="brand-footer">
+                <p>Dipersembahkan untuk Desa Sine oleh:</p>
+                <div class="brand-logos">
+                    <img src="logo_kampus.png" alt="UMPKU">
+                    <div class="divider-line"></div>
+                    <img src="logo_kkn.png" alt="KKN 4">
+                </div>
+                <span class="brand-text"><strong>KKN Kelompok 4</strong><br>UMPKU Surakarta 2026</span>
+            </div>
+
+            <div style="height: 30px;"></div>
+        </section>
+
+        <section id="page-check" class="page-section">
+            <div class="card input-card">
+                <div class="card-head-simple">
+                    <h2>Form Pemeriksaan</h2>
+                    <p>Silakan pilih jenis tes:</p>
+                </div>
+                
+                <form id="healthForm">
+                    <div class="bio-section">
+                        <label><i class="fa-solid fa-user"></i> Nama Warga</label>
+                        <input type="text" id="nameVal" placeholder="Contoh: Pak Budi">
+                    </div>
+
+                    <div class="form-group">
+                        <label>Jenis Pemeriksaan</label>
+                        <select id="testType" onchange="toggleInputs()">
+                            <option value="bp">Tekanan Darah (Tensi)</option>
+                            <option value="sugar">Gula Darah (Sewaktu)</option>
+                            <option value="uric">Asam Urat</option>
+                            <option value="cholesterol">Kolesterol Total</option>
+                            <option value="bmi">Status Gizi (BMI)</option>
+                        </select>
+                    </div>
+
+                    <div id="input-age-group" class="input-group">
+                        <label>Umur (Tahun)</label>
+                        <input type="number" id="ageVal" placeholder="Contoh: 55">
+                    </div>
+
+                    <div id="input-bp" class="input-group">
+                        <div class="row">
+                            <div class="col"><label>Sistolik (Atas)</label><input type="number" id="bpSys" placeholder="120"></div>
+                            <div class="col"><label>Diastolik (Bawah)</label><input type="number" id="bpDia" placeholder="80"></div>
+                        </div>
+                    </div>
+
+                    <div id="input-sugar" class="input-group hidden">
+                        <label>Gula Darah Sewaktu (mg/dL)</label><input type="number" id="sugarVal" placeholder="Contoh: 140">
+                    </div>
+
+                    <div id="input-uric" class="input-group hidden">
+                        <div class="row">
+                            <div class="col"><label>Gender</label><select id="gender"><option value="male">Bapak (Pria)</option><option value="female">Ibu (Wanita)</option></select></div>
+                            <div class="col"><label>Nilai (mg/dL)</label><input type="number" id="uricVal" placeholder="Contoh: 7.0"></div>
+                        </div>
+                    </div>
+
+                    <div id="input-cholesterol" class="input-group hidden">
+                        <label>Total Kolesterol (mg/dL)</label><input type="number" id="cholVal" placeholder="Contoh: 200">
+                    </div>
+                    
+                    <div id="input-bmi" class="input-group hidden">
+                        <div class="row">
+                            <div class="col"><label>Berat (kg)</label><input type="number" id="weightVal" placeholder="60"></div>
+                            <div class="col"><label>Tinggi (cm)</label><input type="number" id="heightVal" placeholder="165"></div>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn-analyze" onclick="analyzeHealth()">
+                        <i class="fa-solid fa-magnifying-glass-chart"></i> Analisa Hasil
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <section id="page-history" class="page-section">
+            <div class="history-header">
+                <h2>Riwayat Kesehatan</h2>
+                <button class="btn-clear" onclick="clearHistory()"><i class="fa-solid fa-trash"></i> Reset</button>
+            </div>
+
+            <div class="filter-box">
+                <select id="historyFilter" onchange="loadHistory()">
+                    <option value="all">📂 Tampilkan Semua</option>
+                    <option value="bp">🩸 Tensi (Tekanan Darah)</option>
+                    <option value="sugar">🍬 Gula Darah</option>
+                    <option value="uric">🦶 Asam Urat</option>
+                    <option value="cholesterol">🍟 Kolesterol</option>
+                    <option value="bmi">⚖️ Berat Badan (BMI)</option>
+                </select>
+            </div>
+            <div id="historyList" class="history-list"></div>
+        </section>
+
+        <nav class="bottom-nav">
+            <a href="#" class="nav-item active" onclick="navTo('page-home', this)"><i class="fa-solid fa-house"></i><span>Beranda</span></a>
+            <a href="#" class="nav-item" onclick="navTo('page-check', this)"><i class="fa-solid fa-notes-medical"></i><span>Cek</span></a>
+            <a href="#" class="nav-item" onclick="navTo('page-history', this)"><i class="fa-solid fa-book-medical"></i><span>Riwayat</span></a>
+        </nav>
+    </div>
+
+    <div id="resultModal" class="modal-overlay">
+        <div class="modal-sheet">
+            <div class="drag-handle"></div>
+            <div class="scrollable-content">
+                <div id="resHeader" class="report-header">
+                    <span class="report-label">Hasil Analisa:</span>
+                    <h1 id="resValue">0</h1>
+                    
+                    <p id="resRef" class="ref-text">Normal: -</p>
+                    <h3 id="resTitle">Status</h3>
+                    <div class="level-badge" id="resLevel">...</div>
+                </div>
+                
+                <div class="meter-box">
+                    <div class="meter-label"><span>Sehat</span><span>Waspada</span><span>Bahaya</span><span>Kritis</span></div>
+                    <div class="meter-track"><div id="urgencyFill" class="meter-fill"></div></div>
+                </div>
+
+                <div class="report-card">
+                    <div class="card-head"><i class="fa-solid fa-user-injured"></i> Gejala Umum</div>
+                    <div class="card-body"><ul id="resSymptoms" class="symptom-list"></ul></div>
+                </div>
+                
+                <div class="report-card">
+                    <div class="card-head" style="color:#d35400;"><i class="fa-solid fa-magnifying-glass"></i> Penyebab</div>
+                    <div class="card-body"><ul id="resCauses" class="symptom-list"></ul></div>
+                </div>
+
+                <div class="report-card">
+                    <div class="card-head"><i class="fa-solid fa-microscope"></i> Penjelasan Medis</div>
+                    <div class="card-body"><p id="resExplain" class="explain-text">...</p><div class="risk-alert"><strong>⚠️ Risiko:</strong> <span id="resRisk">...</span></div></div>
+                </div>
+
+                <div class="report-card">
+                    <div class="card-head"><i class="fa-solid fa-bowl-food"></i> Panduan Makan</div>
+                    <div class="card-body" id="resDiet"></div>
+                </div>
+
+                <div class="action-alert">
+                    <i class="fa-solid fa-bell"></i><div><strong>Saran Tindakan:</strong><p id="resAction" style="margin:0;">...</p></div>
+                </div>
+
+                <div style="text-align:center; margin:15px 0; font-size:10px; color:#95a5a6; background:#f9f9f9; padding:8px; border-radius:8px;">
+                    <i class="fa-solid fa-circle-info"></i> Hasil ini adalah <strong>Deteksi Dini</strong>. Konsultasikan dengan Bidan Desa.
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button class="btn-wa" onclick="shareToWa()"><i class="fa-brands fa-whatsapp"></i> Lapor WA</button>
+                <button class="btn-save" onclick="saveResult()"><i class="fa-solid fa-floppy-disk"></i> Simpan</button>
+                <button class="btn-close" onclick="closeModal()">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="articleModal" class="modal-overlay">
+        <div class="modal-sheet" style="height: 95vh;">
+            <div class="drag-handle"></div>
+            <div class="scrollable-content" style="padding: 0 10px 40px 10px;">
+                <div id="artContent"></div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-close" onclick="closeArticle()" style="width:100%">Tutup Artikel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="data.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
