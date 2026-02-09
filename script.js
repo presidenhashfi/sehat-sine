@@ -129,32 +129,60 @@ function analyzeHealth() {
 function renderFullReport(key, valDisplay, type, age, name, dynamicTargetText, showSaveButton) {
     const data = medicalDatabase[key] || medicalDatabase['bp_normal'];
     
-    // TEXT FINAL (Prioritas: Teks Dinamis > Teks Database)
+    // TEXT FINAL
     const finalRefText = dynamicTargetText || data.ref_text;
 
-    // SIMPAN DATA LENGKAP KE GLOBAL VAR (Termasuk KEY database)
+    // --- FITUR BARU: FORMAT WA ALA "STRUK DIGITAL" ---
+    // Menggunakan kode: *Tebal*, _Miring_, ```Monospace``` (Kotak)
+    
+    const currentDate = new Date().toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+    
+    let adviceList = data.diet.avoid.join(", ");
+    
+    // Desain Struk WA
+    const strukWa = 
+`*LAPORAN SEHAT SINE* 🏥
+_KKN Kelompok 4 UMPKU_
+──────────────────
+📅 ${currentDate}
+👤 *${name}* (${age} Th)
+──────────────────
+Jenis Cek : ${getTestName(type)}
+Hasil     : *${valDisplay}*
+Normal    : ${finalRefText}
+
+📊 Status : *${data.title.toUpperCase()}*
+──────────────────
+💡 *SARAN & PANTANGAN:*
+${data.action}
+
+⛔ *HINDARI:*
+${adviceList}
+──────────────────
+_Simpan pesan ini sebagai riwayat._
+_Cek mandiri di: www.sehatsine.site_`;
+
+    // SIMPAN DATA
     currentResultData = {
-        resultKey: key, // <--- PENTING: Untuk buka ulang history
-        refText: finalRefText, // <--- PENTING: Simpan target spesifik umur
+        resultKey: key, 
+        refText: finalRefText,
         name: name, type: type, value: valDisplay, age: age,
         status: data.title, color: getKeyColor(data.theme), level: data.level,
         date: new Date().toLocaleDateString('id-ID'), timestamp: Date.now(),
-        wa_text: `Lapor Keluarga,\nAtas nama: ${name} (${age} Th)\nCek: ${data.title}\nHasil: ${valDisplay}\nStatus: ${data.level}\nSaran: ${data.action}`
+        wa_text: strukWa // <--- Pakai format baru
     };
 
-    // 1. UI HEADER
+    // --- UPDATE UI (Sama seperti sebelumnya) ---
     const header = document.getElementById('resHeader');
     header.className = `report-header bg-${data.theme}`;
     document.getElementById('resTitle').innerText = data.title;
     document.getElementById('resValue').innerText = valDisplay;
     
-    // Pastikan elemen ada sebelum diisi (Safety check)
     const refEl = document.getElementById('resRef');
     if(refEl) refEl.innerText = finalRefText; 
     
     document.getElementById('resLevel').innerText = data.level;
 
-    // 2. METERAN
     const meter = document.getElementById('urgencyFill');
     let width = "25%";
     if(data.urgency == 2) width = "50%"; 
@@ -163,7 +191,6 @@ function renderFullReport(key, valDisplay, type, age, name, dynamicTargetText, s
     meter.style.width = width;
     meter.className = `meter-fill fill-${data.theme}`;
 
-    // 3. LOGIKA LIST (GEJALA & PENYEBAB)
     const renderList = (id, arr) => {
         const el = document.getElementById(id); el.innerHTML = "";
         if(arr) arr.forEach(x => el.innerHTML += `<li>${x}</li>`);
@@ -171,23 +198,28 @@ function renderFullReport(key, valDisplay, type, age, name, dynamicTargetText, s
     renderList('resSymptoms', data.symptoms);
     renderList('resCauses', data.causes);
 
-    // 4. PENJELASAN TEKS
-    document.getElementById('resExplain').innerText = data.info;
+    document.getElementById('resExplain').innerText = data.info; // Fix: Pakai data.info (sesuai data.js kamu)
     document.getElementById('resRisk').innerText = data.risk_future || "-";
     document.getElementById('resAction').innerText = data.action;
     
-    // 5. DIET
     document.getElementById('resDiet').innerHTML = `
         <div class="diet-col good"><strong><i class="fa-solid fa-check"></i> Dianjurkan:</strong><p>${data.diet.eat.join(", ")}</p></div>
         <div class="diet-col bad"><strong><i class="fa-solid fa-xmark"></i> Pantangan:</strong><p>${data.diet.avoid.join(", ")}</p></div>`;
 
-    // 6. ATUR TOMBOL SIMPAN
-    // Kalau buka dari history -> Sembunyikan. Kalau analisa baru -> Tampilkan.
     const btnSave = document.querySelector('.btn-save');
     if(btnSave) btnSave.style.display = showSaveButton ? 'flex' : 'none';
 
-    // 7. BUKA MODAL
     document.getElementById('resultModal').classList.add('active');
+}
+
+// Helper kecil untuk nama tes (Taruh di bawah renderFullReport atau di mana saja)
+function getTestName(t) {
+    if(t==='bp') return "Tensi Darah";
+    if(t==='sugar') return "Gula Darah";
+    if(t==='uric') return "Asam Urat";
+    if(t==='cholesterol') return "Kolesterol";
+    if(t==='bmi') return "Cek Gizi/BMI";
+    return "Kesehatan";
 }
 
 // --- BUKA DARI RIWAYAT (KLIK KARTU) ---
